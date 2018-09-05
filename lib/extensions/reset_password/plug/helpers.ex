@@ -1,4 +1,4 @@
-defmodule PowResetPassword.Plug do
+defmodule PowResetPassword.Plug.Helpers do
   @moduledoc false
   alias Plug.Conn
   alias Pow.{Config, Store.Backend.EtsCache, UUID}
@@ -12,7 +12,7 @@ defmodule PowResetPassword.Plug do
       |> case do
         nil ->
           conn
-          |> Pow.Plug.fetch_config()
+          |> Pow.Plug.Helpers.fetch_config()
           |> Context.user_schema_mod()
           |> struct()
 
@@ -43,7 +43,7 @@ defmodule PowResetPassword.Plug do
 
   @spec create_reset_token(Conn.t(), map()) :: {:ok, map(), Conn.t()} | {:error, map(), Conn.t()}
   def create_reset_token(conn, params) do
-    config = Pow.Plug.fetch_config(conn)
+    config = Pow.Plug.Helpers.fetch_config(conn)
     user   =
       params
       |> Map.get("email")
@@ -70,7 +70,7 @@ defmodule PowResetPassword.Plug do
   def user_from_token(conn, token) do
     {store, store_config} =
       conn
-      |> Pow.Plug.fetch_config()
+      |> Pow.Plug.Helpers.fetch_config()
       |> store()
 
     store_config
@@ -83,7 +83,7 @@ defmodule PowResetPassword.Plug do
 
   @spec update_user_password(Conn.t(), map()) :: {:ok, map(), Conn.t()} | {:error, map(), Conn.t()}
   def update_user_password(conn, params) do
-    config = Pow.Plug.fetch_config(conn)
+    config = Pow.Plug.Helpers.fetch_config(conn)
     token  = conn.params["id"]
 
     conn

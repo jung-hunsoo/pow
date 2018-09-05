@@ -1,4 +1,4 @@
-defmodule PowPersistentSession.Plug do
+defmodule PowPersistentSession.Plug.Helpers do
   @moduledoc false
   alias Plug.Conn
   alias Pow.Config
